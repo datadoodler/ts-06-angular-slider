@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>angular slider</title>
+    <link href="vendor_local/rzslider.css" rel="stylesheet"/>
+    <link href="vendor_local/prism.css" rel="stylesheet"/>
+
+    <link href="vendor_local/bootstrap-custom.css" rel="stylesheet">
+
+    <style>
+        .speedslider {
+            -webkit-transition: all .5s ease;
+            -moz-transition: all .5s ease;
+            transition: all .5s ease;
+            max-width: 0;
+            visibility: hidden;
+            margin-left: 5px;
+        }
+
+        .speedslider-show {
+            max-width: 130px;
+            visibility: visible;
+        }
+
+        rzslider .rz-pointer {
+            top: -3px;
+            z-index: 3;
+            width: 10px;
+            height: 10px;
+            cursor: pointer;
+            background-color: #ded308;
+            -webkit-border-radius: 16px;
+            -moz-border-radius: 16px;
+            border-radius: 16px;
+        }
+
+
+        rzslider .rz-pointer:after {
+            display:none;
+        }
+
+
+        rzslider .rz-bar.rz-selection {
+            z-index: 2;
+            background: red;
+            -webkit-border-radius: 2px;
+            -moz-border-radius: 2px;
+            border-radius: 2px;
+        }
+
+    </style>
+</head>
+<body ng-app="app">
+
+<div ng-controller="ctrl1 as vm">
+    <h3>rzslider example</h3>
+    <h5>See <a href="https://jsfiddle.net/ValentinH/954eve2L/" target="new">https://jsfiddle.net/ValentinH/954eve2L/</a>
+    </h5>
+<p>Both of these sliders are bound to the same object on the backend. (See object at bottom). Press the button to view
+the slider. Then try it again with the checkbox checked.</p>
+    <ul>
+        <li>
+            <div>
+                <h4>Slider #1</h4>
+
+                <p>This instance displays properly when initialized</p>
+
+                <div>
+                    <rzslider
+                            rz-slider-model="vm.speedSlider.value"
+                            rz-slider-options="vm.speedSlider.options"
+                    ></rzslider>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div>
+                <h4>Slider #2</h4>
+
+                <p>This instance is <em>not</em> rendered properly when initialized, unless forced. </p>
+
+                <div>
+                    <button ng-click="vm.clickButton()">Toggle Slider Visibility</button>
+                    Use with forced animation
+                    <input type="checkbox" ng-model="vm.forceRender"/>{{vm.forceRender}}
+                </div>
+                <div>
+                    <rzslider class="speedslider" ng-class="{'speedslider-show':vm.showSpeedSlider}"
+                              rz-slider-model="vm.speedSlider.value"
+                              rz-slider-options="vm.speedSlider.options"
+                    ></rzslider>
+                </div>
+
+
+            </div>
+
+        </li>
+    </ul>
+    <hr/>
+   <pre> <code class="lang-javascript">
+       function clickButton() {
+            this.showSpeedSlider = !this.showSpeedSlider;
+            if(this.forceRender){
+                // Force rendering at every iteration of the interval.
+                $interval(function () {
+                   $rootScope.$broadcast('rzSliderForceRender');
+                }, 1,500, true, $rootScope)
+            }
+       };
+    </code>
+    </pre>
+    <h5>Slider Properties:</h5>
+    <ul>
+
+        <li> {{vm.speedSlider}}</li>
+    </ul>
+
+
+    <script src="vendor_local/angular.js"></script>
+
+    <script src="vendor_local/rzslider.js"></script>
+    <script src="vendor_local/prism.js"></script>
+
+    <script src="app.js"></script>
+    <script src="ctrl1.controller.js"></script>
+</body>
+</html>
